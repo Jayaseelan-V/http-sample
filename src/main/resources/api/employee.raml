@@ -1,0 +1,23 @@
+#%RAML 1.0
+title: Employee Details
+version: v1
+
+/search:
+  get:
+    queryString:
+      minProperties: 1
+      properties:
+        joingDate?: datetime
+        name?: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: array
+  /{employeeId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: object

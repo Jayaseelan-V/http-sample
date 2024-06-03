@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow
+		name="main"
+		doc:id="eac63fb2-4623-4cff-82ec-6fdd7cc0e334">
+		<http:listener
+			doc:name="Listener"
+			doc:id="771fb580-c8d3-4519-aece-eebcac26c820"
+			config-ref="HTTP_Listener_config"
+			path="${http.path}" />
+		<apikit:router
+			doc:name="APIkit Router"
+			doc:id="b6680e70-2cb8-4557-bb97-6d8307fa6873"
+			config-ref="Router" />
+	</flow>
+	<flow
+		name="get:\search:Router"
+		doc:id="d316b047-92f0-44ab-8395-7b23ef7cefa3">
+		<logger
+			level="INFO"
+			doc:name="Logger"
+			doc:id="287ce1fb-b42d-4990-a79c-8a8763748183"
+			message="Starting the api processing for search strinng" />
+		<ee:transform
+			doc:name="Get employee details"
+			doc:id="cd22e1ac-6016-4a79-bccf-01f833f37ab5">
+			<ee:message>
+				<ee:set-payload
+					resource="dataweave/employeeSearch.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger
+			level="INFO"
+			doc:name="Logger"
+			doc:id="031cf0cb-5073-46e4-be17-9d6b41a756d3"
+			message="End of api processing for search strinng" />
+	</flow>
+	<flow
+		name="get:\search\(employeeId):Router"
+		doc:id="db526851-623c-4ac8-bb03-01dc93ee5b71">
+		<logger
+			level="INFO"
+			doc:name="Logger"
+			doc:id="150d9167-f3af-4824-847f-3d8fd3fb6d21"
+			message="Starting the api processing for search by employeeId" />
+		<ee:transform
+			doc:name="Get employee details"
+			doc:id="2733d4ba-933c-4bdc-843f-80064110c6f1">
+			<ee:message>
+				<ee:set-payload resource="dataweave/getEmpById.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f201cf99-04d2-484c-9e45-4146ef4e16e3" message="End of api processing for search by employeeId" />
+	</flow>
+</mule>
